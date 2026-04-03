@@ -3,3 +3,10 @@ variable "component" {
     default = "mongodb"
 }
 
+variable "project" {
+    default = "roboshop"
+}
+
+variable "environment" {
+    default = "dev"
+}
