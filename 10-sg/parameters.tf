@@ -1,5 +1,6 @@
-resource "aws_ssm_parameter" "mongodb_sg_id" {
-  name  = "/${var.project}/${var.environment}/mongodb_sg_id"
+resource "aws_ssm_parameter" "sg_ids" {
+  count = length[var.sg_names]
+  name  = "/${var.project}/${var.environment}/var.sg_names[count.index]"
   type  = "String"
-  value = module.mongodb-sg.mongodb_sg_id
+  value = module.sg.mongodb_sg_id
 }
