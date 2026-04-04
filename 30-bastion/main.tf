@@ -3,7 +3,7 @@ resource "aws_instance" "bastion" {
   instance_type = "t3.micro"
   vpc_security_group_ids = [local.vpc_id]
   subnet_id  = local.public_subnet_ids
-  iam_instance_profile = aws_iam_instance_profile.bastion
+  iam_instance_profile = aws_iam_instance_profile.bastion.name
 
 
   tags = merge(local.common_tags ,
