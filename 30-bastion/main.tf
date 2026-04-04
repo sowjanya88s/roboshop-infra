@@ -12,6 +12,7 @@ resource "aws_instance" "bastion" {
   },
   var.bastion_tags
   )
+}
 
   resource "aws_iam_role" "bastion_role" {
   name = "test_role"
@@ -46,4 +47,3 @@ resource "aws_iam_instance_profile" "bastion" {
   role = aws_iam_role.bastion_role.name
 }
 
-}
