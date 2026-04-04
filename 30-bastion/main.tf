@@ -38,7 +38,7 @@ resource "aws_instance" "bastion" {
 }
 resource "aws_iam_role_policy_attachment" "ec2-policy" {
   role       = aws_iam_role.bastion_role.name
-  policy_arn = arn:aws:iam::aws:policy/AmazonEC2FullAccess
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
 }
  
 resource "aws_iam_instance_profile" "bastion" {
