@@ -1,8 +1,8 @@
 variable "project" {
- type = String
+ type = string
 }
 variable "environment" {
-    type = String
+    type = string
 }
 variable "bastion_tags" {
     type = map
