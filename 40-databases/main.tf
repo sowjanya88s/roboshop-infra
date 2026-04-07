@@ -61,7 +61,7 @@ resource "terraform_data" "redis" {
     aws_instance.redis.id
   ]
 
-  provisioner "remote-exec" {
+ 
     connection {
     type     = "ssh"
     user     = "ec2-user"
@@ -83,4 +83,4 @@ resource "terraform_data" "redis" {
   }
     
   }
-}
+
