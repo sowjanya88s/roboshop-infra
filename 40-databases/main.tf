@@ -8,7 +8,7 @@ resource "aws_instance" "mongodb" {
   {
     Name = "${var.project}-${var.environment}-mongodb"
   },
-  var.bastion_tags
+  var.mongodb_tags
   )
 }
 
@@ -52,7 +52,7 @@ resource "aws_instance" "redis" {
   {
     Name = "${var.project}-${var.environment}-redis"
   },
-  var.bastion_tags
+  var.redis_tags
   )
 }
 

@@ -14,3 +14,11 @@ variable "domain_name" {
     type = string
     default = "sowjanya.fun"
 }
+variable "mongodb_tags" {
+    type = string
+    default = {}
+}
+variable "redis_tags" {
+    type = string
+    default = {}
+}
