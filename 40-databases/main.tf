@@ -17,7 +17,7 @@ resource "terraform_data" "mongodb" {
     aws_instance.mongodb.id
   ]
 
-  provisioner "remote-exec" {
+  
     connection {
     type     = "ssh"
     user     = "ec2-user"
@@ -38,7 +38,7 @@ resource "terraform_data" "mongodb" {
     ]
   }
     
-  }
+  
 }
 
 
