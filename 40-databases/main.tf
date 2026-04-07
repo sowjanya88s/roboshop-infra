@@ -62,7 +62,7 @@ resource "terraform_data" "redis" {
   ]
 
  
-    connection {
+  connection {
     type     = "ssh"
     user     = "ec2-user"
     password = "DevOps321"
