@@ -4,6 +4,8 @@ resource "aws_instance" "bastion" {
   vpc_security_group_ids = [local.bastion_sg_id]
   subnet_id  = local.public_subnet_id
   iam_instance_profile = aws_iam_instance_profile.bastion.name
+   # user_data = file("bootstrap.sh")
+
 
 
   tags = merge(local.common_tags ,
@@ -15,7 +17,7 @@ resource "aws_instance" "bastion" {
 }
 
   resource "aws_iam_role" "bastion_role" {
-  name = "test_role"
+  name = "bastion_role"
 
   # Terraform's "jsonencode" function converts a
   # Terraform expression result to valid JSON syntax.
@@ -39,7 +41,7 @@ resource "aws_instance" "bastion" {
 }
 resource "aws_iam_role_policy_attachment" "ec2-policy" {
   role       = aws_iam_role.bastion_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
+  policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
 }
  
 resource "aws_iam_instance_profile" "bastion" {
