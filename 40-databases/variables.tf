@@ -15,10 +15,10 @@ variable "domain_name" {
     default = "sowjanya.fun"
 }
 variable "mongodb_tags" {
-    type = string
+    type = map
     default = {}
 }
 variable "redis_tags" {
-    type = string
+    type = map
     default = {}
 }
