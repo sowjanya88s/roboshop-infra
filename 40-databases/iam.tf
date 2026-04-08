@@ -23,6 +23,10 @@ resource "aws_iam_role" "mysql_role" {
 }
 
 resource "aws_iam_role_policy_attachment" "mysql-attach" {
-  role       = aws_iam_role.role.name
+  role       = aws_iam_role.mysql_role.name
   policy_arn = aws_iam_policy.policy.arn
+}
+resource "aws_iam_instance_profile" "mysql_profile" {
+  name = "mysql_profile"
+  role = aws_iam_role.mysql_role.name
 }
