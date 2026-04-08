@@ -4,7 +4,18 @@ resource "aws_instance" "bastion" {
   vpc_security_group_ids = [local.bastion_sg_id]
   subnet_id  = local.public_subnet_id
   iam_instance_profile = aws_iam_instance_profile.bastion.name
-   user_data = file("bastion.sh")
+  user_data = file("bastion.sh")
+    
+    root_block_device {
+    volume_size = 40 # in GB <<----- I increased this!
+    volume_type = "gp3"
+    tags = merge(local.common_tags ,
+    {
+      Name = "${var.project}-${var.environment}-bastion"
+   },
+    var.bastion_tags
+  )
+  }
 
 
 
