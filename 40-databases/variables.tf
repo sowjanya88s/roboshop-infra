@@ -22,3 +22,11 @@ variable "redis_tags" {
     type = map
     default = {}
 }
+variable "mysql_tags" {
+    type = map
+    default = {}
+}
+variable "rabbitmq_tags" {
+    type = map
+    default = {}
+}
