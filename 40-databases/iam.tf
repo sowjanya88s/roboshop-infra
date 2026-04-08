@@ -29,7 +29,7 @@ resource "aws_iam_policy" "mysql" {
 }
 
 resource "aws_iam_role_policy_attachment" "mysql" {
-  role       = aws_iam_role.mysql.name
+  role       = aws_iam_role.mysql_role.name
   policy_arn = aws_iam_policy.mysql.arn
 }
 
