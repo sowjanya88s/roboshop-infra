@@ -7,7 +7,7 @@ resource "aws_lb" "backend_alb" {
 
   enable_deletion_protection = false
 
-  tags = merge(var.common_tags,
+  tags = merge(local.common_tags,
   {
     Name = "${var.project}-${var.environment}-backend-alb"
   }
