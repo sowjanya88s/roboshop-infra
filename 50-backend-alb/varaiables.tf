@@ -14,3 +14,6 @@ variable "domain_name" {
     type = string
     default = "sowjanya.fun"
 }
+variable "common_tags" {
+    type = map
+}
