@@ -86,15 +86,24 @@ resource "aws_launch_template" "example" {
    # tags for instances created by launch template through
   tag_specifications {
     resource_type = "instance"
-    tags = {
+    tags = merge(
+        {
       Name = "${var.project}-${var.environment}-catalogue"
-    }
-     # tags for volumes created by launch template through
-    resource_type = "volume"
-    tags = {
-      Name = "${var.project}-${var.environment}-catalogue"
-    }
+    },
+    local.common_tags
+    )
   }
+     # tags for volumes created by launch template through
+     tag_specifications {
+    resource_type = "volume"
+    tags = merge(
+        {
+      Name = "${var.project}-${var.environment}-catalogue"
+    },
+   local.common_tags
+    )
+  }
+  
    # tags for  launch template 
   tags = merge(
   {
