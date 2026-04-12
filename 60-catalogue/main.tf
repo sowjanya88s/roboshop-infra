@@ -76,7 +76,7 @@ resource "aws_lb_target_group" "catalogue" {
   }
 }
 
-resource "aws_launch_template" "example" {
+resource "aws_launch_template" "catalogue" {
   name = "${var.project}-${var.environment}-catalogue"
   image_id = aws_ami_from_instance.catalogue.id
   instance_initiated_shutdown_behavior = "terminate"
@@ -114,3 +114,90 @@ resource "aws_launch_template" "example" {
 
 }
 
+
+resource "aws_autoscaling_group" "catalogue" {
+  name                      = "${var.project}-${var.environment}-catalogue"
+  max_size                  = 10
+  min_size                  = 1
+  health_check_grace_period = 120
+  health_check_type         = "ELB"
+  desired_capacity          = 1
+  force_delete              = false
+
+  launch_template {
+    id      = aws_launch_template.catalogue.id
+    version = "$Latest"
+  }
+
+  vpc_zone_identifier       = [data.aws_ssm_parameter.private_subnet_ids]
+
+  target_group_arns = [aws_lb_target_group.catalogue.arn]
+  timeouts {
+    delete = "15m"
+  }
+
+  dynamic "tag" {
+    for_each = merge(
+        {
+            Name = "${var.project}-${var.environment}-catalogue"
+        },
+        local.common_tags
+    )
+
+    content {
+      key                 = tag.key
+      propagate_at_launch = true
+      value               = tag.value
+    }
+  }
+
+  instance_refresh {
+    strategy = "Rolling"
+    preferences {
+      min_healthy_percentage = 50
+    }
+    triggers = ["launch_template"]
+  }
+}
+
+resource "aws_autoscaling_policy" "catalogue" {
+  autoscaling_group_name = "aws_autoscaling_group.catalogue"
+  name                   = "${var.project}-${var.environment}-catalogue"
+  policy_type            = "TargetTrackingScaling"
+    estimated_instance_warmup = 120
+  target_tracking_configuration {
+     predefined_metric_specification {
+        predefined_metric_type = "ASGTotalCPUUtilization"
+      }
+        target_value = 70.0
+    }
+  }
+
+resource "aws_lb_listener_rule" "catalogue" {
+  listener_arn =  local.backend_alb_listener_arn
+  priority     = 10
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.catalogue.arn
+  }
+  condition {
+    host_header {
+      values = ["catalogue.backend-alb-${var.environment}.${var.domain_name}"]
+    }
+  }
+}
+
+resource "terraform_data" "catalogue_delete" {
+  triggers_replace = [
+    aws_instance.catalogue.id
+  ]
+  depends_on = [aws_autoscaling_policy.catalogue]
+  
+ provisioner "remote-exec" {
+    inline = [
+      "aws ec2 terminate-instances --instance-ids ${aws_instance.catalogue.id}",
+     
+    ]
+  }
+}
