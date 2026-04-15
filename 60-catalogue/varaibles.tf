@@ -18,3 +18,6 @@ variable "catalogue_tags" {
     type = map
     default = {}
 }
+variable "app_version" {
+    default = "v3"
+}
