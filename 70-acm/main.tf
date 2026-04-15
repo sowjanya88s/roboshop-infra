@@ -1,8 +1,7 @@
 resource "aws_acm_certificate" "frontend_alb_acm" {
   domain_name       = var.domain_name
   validation_method = "DNS"
-
-  tags = tags = merge(local.common_tags ,
+ tags = merge(local.common_tags ,
   {
     Name = "${var.project}-${var.environment}-fronend-alb-acm"
   }
