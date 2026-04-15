@@ -1,7 +1,7 @@
 locals {
-    fronend_alb_sg_id = data.aws_ssm_parameter.fronend_alb_sg_id.value
+    frontend_alb_sg_id = data.aws_ssm_parameter.fronend_alb_sg_id.value
    public_subnet_ids = split("," , data.aws_ssm_parameter.public_subnet_ids.value)
-   frontend_alb_certificate_arn = data.aws_ssm_parameter.fronend_alb_certificate_arn
+   frontend_alb_certificate_arn = data.aws_ssm_parameter.frontend_alb_certificate_arn
     common_tags = {
         project = "roboshop"
         environment = "dev"
