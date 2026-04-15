@@ -30,6 +30,6 @@ resource "aws_route53_record" "frontend_alb_acm" {
 }
 
 resource "aws_acm_certificate_validation" "frontend-alb-acm" {
-  certificate_arn         = aws_acm_certificate.frontend-alb-acm.arn
-  validation_record_fqdns = [for record in aws_route53_record.frontend-alb-acm : record.fqdn]
+  certificate_arn         = aws_acm_certificate.frontend_alb_acm.arn
+  validation_record_fqdns = [for record in aws_route53_record.frontend_alb_acm : record.fqdn]
 }
