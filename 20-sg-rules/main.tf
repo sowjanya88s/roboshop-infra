@@ -235,7 +235,7 @@ resource "aws_security_group_rule" "backend_alb_catalogue" {
   source_security_group_id = local.catalogue_sg_id
   security_group_id = local.backend_alb_sg_id
 }
-resource "aws_security_group_rule" "backend_alb_user {
+resource "aws_security_group_rule" "backend_alb_user" {
   type              = "ingress"
   from_port         = 80
   to_port           = 80
