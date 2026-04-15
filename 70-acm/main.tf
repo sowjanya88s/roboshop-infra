@@ -12,9 +12,9 @@ resource "aws_acm_certificate" "frontend_alb_acm" {
   }
 }
 
-resource "aws_route53_record" "frontend-alb-acm" {
+resource "aws_route53_record" "frontend_alb_acm" {
   for_each = {
-    for dvo in aws_acm_certificate.frontend-alb-acm.domain_validation_options : dvo.domain_name => {
+    for dvo in aws_acm_certificate.frontend_alb_acm.domain_validation_options : dvo.domain_name => {
       name   = dvo.resource_record_name
       record = dvo.resource_record_value
       type   = dvo.resource_record_type
