@@ -1,5 +1,5 @@
 resource "aws_acm_certificate" "frontend_alb_acm" {
-  domain_name       = var.domain_name
+  domain_name       = "*.${var.domain_name}"
   validation_method = "DNS"
  
  tags = merge(local.common_tags ,
