@@ -4,6 +4,7 @@ app_version=$3
 
 dnf install ansible -y
 cd /home/ec2-user
+rm -rf *
 git clone https://github.com/sowjanya88s/ansible-roboshop-roles-tf.git
 git pull
 cd ansible-roboshop-roles-tf
