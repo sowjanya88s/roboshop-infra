@@ -58,7 +58,7 @@ resource "aws_cloudfront_distribution" "roboshop" {
   )
 
   viewer_certificate {
-    acm_certificate_arn = data.acm_certificate_arn
+    acm_certificate_arn = local.acm_certificate_arn
     ssl_support_method  = "sni-only"
   }
 }
