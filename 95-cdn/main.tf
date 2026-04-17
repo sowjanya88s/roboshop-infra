@@ -61,6 +61,7 @@ resource "aws_cloudfront_distribution" "roboshop" {
     acm_certificate_arn = data.acm_certificate_arn
     ssl_support_method  = "sni-only"
   }
+}
 
 
 # Create Route53 records for the CloudFront distribution aliases
