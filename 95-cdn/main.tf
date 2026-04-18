@@ -13,7 +13,7 @@ resource "aws_cloudfront_distribution" "alb_distribution" {
 
   enabled             = true
   is_ipv6_enabled     = false
-  aliases = "${var.project}-${var.environment}.${var.domain_name}"
+  aliases = ["${var.project}-${var.environment}.${var.domain_name}"]
   
  default_cache_behavior {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
@@ -22,7 +22,7 @@ resource "aws_cloudfront_distribution" "alb_distribution" {
     viewer_protocol_policy =  "https-only"
     cache_policy_id = local.cache_disabled
   }
- default_cache_behavior {
+ ordered_cache_behavior {
     path_pattern     = "/images/*"
     allowed_methods  = ["GET", "HEAD", "OPTIONS"]
     cached_methods   = ["GET", "HEAD"]
@@ -30,7 +30,7 @@ resource "aws_cloudfront_distribution" "alb_distribution" {
     viewer_protocol_policy =  "https-only"
     cache_policy_id = local.cache_optimized
   }
-  default_cache_behavior {
+  ordered_cache_behavior {
     path_pattern     = "/media/*"
     allowed_methods  = ["GET", "HEAD", "OPTIONS"]
     cached_methods   = ["GET", "HEAD"]
