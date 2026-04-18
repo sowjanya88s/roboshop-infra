@@ -10,7 +10,10 @@
         {
             "Sid": "VisualEditor1",
             "Effect": "Allow",
-            "Action": "ssm:DescribeParameters",
+            "Action": [
+                "ssm:DescribeParameters",
+                "kms:Decrypt"
+            ],
             "Resource": "*"
         }
     ]
