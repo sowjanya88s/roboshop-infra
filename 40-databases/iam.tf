@@ -18,7 +18,7 @@ resource "aws_iam_role" "mysql_role" {
   })
 
   tags = {
-    tag-key = "${var.project}-${var.environment}-mysql"
+   Name= "${var.project}-${var.environment}-mysql"
   }
 }
 
