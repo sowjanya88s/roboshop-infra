@@ -18,11 +18,21 @@ resource "aws_cloudfront_distribution" "alb_distribution" {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods   = ["GET", "HEAD"]
     target_origin_id = "frontend-${var.environment}.${domain_name}"
-    viewer_protocol_policy =  
-
-    }
-
-    viewer_protocol_policy = "redirect-to-https"
+    viewer_protocol_policy =  local.cache_disabled
+  }
+ default_cache_behavior {
+    path_pattern     = "/images/*"
+    allowed_methods  = ["GET", "HEAD", "OPTIONS"]
+    cached_methods   = ["GET", "HEAD"]
+    target_origin_id = "frontend-${var.environment}.${domain_name}"
+    viewer_protocol_policy =  local.cache_optimized
+  }
+  default_cache_behavior {
+    path_pattern     = "/media/*"
+    allowed_methods  = ["GET", "HEAD", "OPTIONS"]
+    cached_methods   = ["GET", "HEAD"]
+    target_origin_id = "frontend-${var.environment}.${domain_name}"
+    viewer_protocol_policy =  local.cache_optimized
   }
 
   restrictions {
@@ -43,14 +53,14 @@ resource "aws_cloudfront_distribution" "alb_distribution" {
 }
 
 resource "aws_route53_record" "cloudfront" {
-  for_each = aws_cloudfront_distribution.s3_distribution.aliases
-  zone_id  = data.aws_route53_zone.my_domain.zone_id
-  name     = each.value
+
+  zone_id  = var.zone_id
+  name     = "${var.project}-${var.environment}.${var.domain_name}"
   type     = "A"
 
   alias {
-    name                   = aws_cloudfront_distribution.s3_distribution.domain_name
-    zone_id                = aws_cloudfront_distribution.s3_distribution.hosted_zone_id
+    name                   = aws_cloudfront_distribution.alb_distribution.domain_name
+    zone_id                = aws_cloudfront_distribution.alb_distribution.hosted_zone_id
     evaluate_target_health = false
   }
 }
