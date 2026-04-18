@@ -1,7 +1,7 @@
 resource "aws_cloudfront_distribution" "alb_distribution" {
   origin {
-    domain_name = "frontend-${var.environment}.${domain_name}"
-    origin_id   = "frontend-${var.environment}.${domain_name}"
+    domain_name = "frontend-${var.environment}.${var.domain_name}"
+    origin_id   = "frontend-${var.environment}.${var.domain_name}"
 
     custom_origin_config {
       http_port              = 80
@@ -13,12 +13,12 @@ resource "aws_cloudfront_distribution" "alb_distribution" {
 
   enabled             = true
   is_ipv6_enabled     = false
-  aliases = "${var.project}-${var.environment}.${domain_name}"
+  aliases = "${var.project}-${var.environment}.${var.domain_name}"
   
  default_cache_behavior {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = "frontend-${var.environment}.${domain_name}"
+    target_origin_id = "frontend-${var.environment}.${var.domain_name}"
     viewer_protocol_policy =  "https-only"
     cache_policy_id = local.cache_disabled
   }
@@ -26,7 +26,7 @@ resource "aws_cloudfront_distribution" "alb_distribution" {
     path_pattern     = "/images/*"
     allowed_methods  = ["GET", "HEAD", "OPTIONS"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = "frontend-${var.environment}.${domain_name}"
+    target_origin_id = "frontend-${var.environment}.${var.domain_name}"
     viewer_protocol_policy =  "https-only"
     cache_policy_id = local.cache_optimized
   }
@@ -34,7 +34,7 @@ resource "aws_cloudfront_distribution" "alb_distribution" {
     path_pattern     = "/media/*"
     allowed_methods  = ["GET", "HEAD", "OPTIONS"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = "frontend-${var.environment}.${domain_name}"
+    target_origin_id = "frontend-${var.environment}.${var.domain_name}"
     viewer_protocol_policy =  "https-only"
     cache_policy_id = local.cache_optimized
   }
