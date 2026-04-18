@@ -13,26 +13,30 @@ resource "aws_cloudfront_distribution" "alb_distribution" {
 
   enabled             = true
   is_ipv6_enabled     = false
+  aliases = "${var.project}-${var.environment}.${domain_name}"
   
  default_cache_behavior {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods   = ["GET", "HEAD"]
     target_origin_id = "frontend-${var.environment}.${domain_name}"
-    viewer_protocol_policy =  local.cache_disabled
+    viewer_protocol_policy =  "https-only"
+    cache_policy_id = local.cache_disabled
   }
  default_cache_behavior {
     path_pattern     = "/images/*"
     allowed_methods  = ["GET", "HEAD", "OPTIONS"]
     cached_methods   = ["GET", "HEAD"]
     target_origin_id = "frontend-${var.environment}.${domain_name}"
-    viewer_protocol_policy =  local.cache_optimized
+    viewer_protocol_policy =  "https-only"
+    cache_policy_id = local.cache_optimized
   }
   default_cache_behavior {
     path_pattern     = "/media/*"
     allowed_methods  = ["GET", "HEAD", "OPTIONS"]
     cached_methods   = ["GET", "HEAD"]
     target_origin_id = "frontend-${var.environment}.${domain_name}"
-    viewer_protocol_policy =  local.cache_optimized
+    viewer_protocol_policy =  "https-only"
+    cache_policy_id = local.cache_optimized
   }
 
   restrictions {
@@ -42,11 +46,12 @@ resource "aws_cloudfront_distribution" "alb_distribution" {
   }
 
   viewer_certificate {
-    cloudfront_default_certificate = local.frontend_alb_certificate_arn
+    acm_certificate_arn = local.frontend_alb_certificate_arn
+    ssl_support_method = "sni-only"
   }
    tags = merge(var.common_tags,
    {
-    Name = "${var.project}-${var.environment}.${var.domain_name}"
+    Name = "${var.project}-${var.environment}-frontend"
   }
    )
 
@@ -61,6 +66,7 @@ resource "aws_route53_record" "cloudfront" {
   alias {
     name                   = aws_cloudfront_distribution.alb_distribution.domain_name
     zone_id                = aws_cloudfront_distribution.alb_distribution.hosted_zone_id
-    evaluate_target_health = false
+    evaluate_target_health = true
   }
+  allow_overwrite = true
 }
