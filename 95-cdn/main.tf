@@ -49,7 +49,7 @@ resource "aws_cloudfront_distribution" "alb_distribution" {
     acm_certificate_arn = local.frontend_alb_certificate_arn
     ssl_support_method = "sni-only"
   }
-   tags = merge(var.common_tags,
+   tags = merge(local.common_tags,
    {
     Name = "${var.project}-${var.environment}-frontend"
   }
