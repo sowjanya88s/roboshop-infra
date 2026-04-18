@@ -12,6 +12,12 @@
             "Effect": "Allow",
             "Action":"ssm:DescribeParameters",
             "Resource": "*"
-        }
+        },
+        {
+      "Sid": "KMSDecrypt",
+      "Effect": "Allow",
+      "Action": "kms:Decrypt",
+      "Resource": "*"
+    }
     ]
 }
